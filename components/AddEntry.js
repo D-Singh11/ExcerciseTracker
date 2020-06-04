@@ -3,6 +3,7 @@ import { Text, View } from 'react-native';
 import { getMetricMetaInfo } from '../utils/helpers';
 import FitSlider from './FitSlider';
 import FitStepper from './FitStepper';
+import DateHeader from './DateHeader';
 
 export default class AddEntry extends Component {
     state = {
@@ -54,6 +55,7 @@ export default class AddEntry extends Component {
         const metaInfo = getMetricMetaInfo();
         return (
             <View>
+                <DateHeader date={(new Date()).toLocaleDateString()} />
                 {Object.keys(metaInfo).map(key => {
                     const { getIcon, type, ...rest } = metaInfo[key]
                     const value = this.state[key]
