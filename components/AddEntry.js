@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 import { getMetricMetaInfo } from '../utils/helpers';
+import FitSlider from './FitSlider';
+import FitStepper from './FitStepper';
 
 export default class AddEntry extends Component {
     state = {
@@ -46,12 +48,32 @@ export default class AddEntry extends Component {
             [metric]: value,
         })
     }
-    
+
 
     render() {
+        const metaInfo = getMetricMetaInfo();
         return (
             <View>
-                {getMetricMetaInfo('bike').getIcon()}
+                {Object.keys(metaInfo).map(key => {
+                    const { getIcon, type, ...rest } = metaInfo[key]
+                    const value = this.state[key]
+
+                    return (
+                        <View key={key}>
+                            {getIcon()}
+                            {type === 'slider'
+                                ? <FitSlider value={value}
+                                    onChange={(value) => this.slider(key, value)}
+                                    {...rest}
+                                />
+                                : <FitStepper value={value}
+                                    onIncrement={() => this.increment(key)}
+                                    onDecrement={() => this.decrement(key)}
+                                    {...rest}
+                                />}
+                        </View>
+                    )
+                })}
             </View>
         )
     }

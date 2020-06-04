@@ -61,12 +61,12 @@ export function getMetricMetaInfo(metric) {
             type: 'steppers',
             getIcon() {
                 return (
-                    <view>
+                    <View>
                         <MaterialIcons name='directions-run'
                             color={'black'}
                             size={35}
                         />
-                    </view>
+                    </View>
                 )
             }
         },
