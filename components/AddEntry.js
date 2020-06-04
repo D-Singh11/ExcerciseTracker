@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
-import { getMetricMetaInfo } from '../utils/helpers';
+import { getMetricMetaInfo, timeToString } from '../utils/helpers';
 import FitSlider from './FitSlider';
 import FitStepper from './FitStepper';
 import DateHeader from './DateHeader';
+import SubmitBtn from './SubmitBtn';
 
 export default class AddEntry extends Component {
     state = {
@@ -50,6 +51,27 @@ export default class AddEntry extends Component {
         })
     }
 
+    submit =() =>{
+        const key = timeToString();
+        const entry = this.state;
+
+
+        // update redux
+
+        this.setState({
+            run: 0,
+            bike: 0,
+            swim: 0,
+            sleep: 0,
+            eat: 0
+        })
+
+        // navigate to home
+
+        // save to DB
+
+        // clear local notification
+    }
 
     render() {
         const metaInfo = getMetricMetaInfo();
@@ -76,6 +98,7 @@ export default class AddEntry extends Component {
                         </View>
                     )
                 })}
+                <SubmitBtn onPress={this.submit} />
             </View>
         )
     }
