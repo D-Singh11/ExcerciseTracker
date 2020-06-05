@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
-import { getMetricMetaInfo, timeToString } from '../utils/helpers';
+import { getMetricMetaInfo, timeToString, getDailyReminderValue } from '../utils/helpers';
 import FitSlider from './FitSlider';
 import FitStepper from './FitStepper';
 import DateHeader from './DateHeader';
 import SubmitBtn from './SubmitBtn';
 import TextButton from './TextButton';
 import { Ionicons } from '@expo/vector-icons';
-import {submitEntry, removeEntry} from '../utils/api';
-import {connect} from 'react-redux';
-import {addEntry} from '../actions';
+import { submitEntry, removeEntry } from '../utils/api';
+import { connect } from 'react-redux';
+import { addEntry } from '../actions';
 
 class AddEntry extends Component {
     state = {
@@ -78,15 +78,22 @@ class AddEntry extends Component {
         // navigate to home
 
         // save to DB/ backend api
-        submitEntry({key, entry});          // passed entry/data and key to storage entry at that key in DB/AsyncStorage
+        submitEntry({ key, entry });          // passed entry/data and key to storage entry at that key in DB/AsyncStorage
 
         // clear local notification
     }
 
-    reset =()=>{
+
+    // it is used to reset the data/entries for the selected day
+    // it sets the data for that day from entries for all activities as stated in state to a message.
+    // that message is reterieved from the helper.js file
+    reset = () => {
         const key = timeToString();
 
         // update redux
+        this.props.dispatch(addEntry({
+            [key]: getDailyReminderValue()
+        }))
 
         // route to home
 
@@ -101,9 +108,9 @@ class AddEntry extends Component {
                 <View>
                     <Ionicons name='md-happy'
                         size={100} />
-                        <Text>You  have alreday logged your information for today.</Text>
-                        <TextButton onPress={this.reset}>
-                            Reset
+                    <Text>You  have alreday logged your information for today.</Text>
+                    <TextButton onPress={this.reset}>
+                        Reset
                         </TextButton>
                 </View>
             )
