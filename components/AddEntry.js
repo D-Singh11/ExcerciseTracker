@@ -8,8 +8,10 @@ import SubmitBtn from './SubmitBtn';
 import TextButton from './TextButton';
 import { Ionicons } from '@expo/vector-icons';
 import {submitEntry, removeEntry} from '../utils/api';
+import {connect} from 'react-redux';
+import {addEntry} from '../actions';
 
-export default class AddEntry extends Component {
+class AddEntry extends Component {
     state = {
         run: 0,
         bike: 0,
@@ -59,8 +61,12 @@ export default class AddEntry extends Component {
         const entry = this.state;
 
 
-        // update redux
+        // update redux by saving new entry to the redux store using dispatch() of redux store and addEntry() action creator
+        this.props.dispatch(addEntry({
+            [key]: entry
+        }));
 
+        // clear the local state so that new entry can be added next time. its like clearing the input of a form for next input
         this.setState({
             run: 0,
             bike: 0,
@@ -71,7 +77,7 @@ export default class AddEntry extends Component {
 
         // navigate to home
 
-        // save to DB
+        // save to DB/ backend api
         submitEntry({key, entry});          // passed entry/data and key to storage entry at that key in DB/AsyncStorage
 
         // clear local notification
@@ -84,7 +90,7 @@ export default class AddEntry extends Component {
 
         // route to home
 
-        // update 'DB'
+        // update 'DB'/ backend api
         removeEntry(key);
     }
 
@@ -130,3 +136,5 @@ export default class AddEntry extends Component {
         )
     }
 }
+
+export default connect()(AddEntry);
