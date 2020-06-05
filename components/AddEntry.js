@@ -85,6 +85,7 @@ export default class AddEntry extends Component {
         // route to home
 
         // update 'DB'
+        removeEntry(key);
     }
 
     render() {
