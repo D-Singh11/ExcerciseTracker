@@ -90,7 +90,8 @@ class AddEntry extends Component {
     reset = () => {
         const key = timeToString();
 
-        // update redux
+        // update redux by resetting the data/entry for the day but set the data to a message
+        // getDailyReminderValue() return a object with todat property which stores a message
         this.props.dispatch(addEntry({
             [key]: getDailyReminderValue()
         }))
@@ -111,7 +112,7 @@ class AddEntry extends Component {
                     <Text>You  have alreday logged your information for today.</Text>
                     <TextButton onPress={this.reset}>
                         Reset
-                        </TextButton>
+                    </TextButton>
                 </View>
             )
         }
@@ -144,4 +145,16 @@ class AddEntry extends Component {
     }
 }
 
-export default connect()(AddEntry);
+function matStateToProps(state){
+    const key = timeToString();                 // gets the current day's date in s string format.
+
+    return{
+        // typeof state[key].today === 'undefined' is used because state will only have today property if there is no data added/logged for the day.
+        // because today property is used to store a message which tells user to add data/emtry for the day.
+        // If the value for 'key'/specific day has no today property then that means data for that day has aleardy been logged/added for that day.
+        // if data already added then there will be no 'today property in the state for that dey(key) and it will be undefined.
+        alreadyLogged : state[key] && typeof state[key].today === 'undefined'
+    }
+}
+
+export default connect(matStateToProps)(AddEntry);
