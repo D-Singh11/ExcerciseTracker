@@ -6,7 +6,8 @@ import FitStepper from './FitStepper';
 import DateHeader from './DateHeader';
 import SubmitBtn from './SubmitBtn';
 import TextButton from './TextButton';
-import { Ionicons } from '@expo/vector-icons'
+import { Ionicons } from '@expo/vector-icons';
+import {submitEntry, removeEntry} from '../utils/api';
 
 export default class AddEntry extends Component {
     state = {
@@ -71,6 +72,7 @@ export default class AddEntry extends Component {
         // navigate to home
 
         // save to DB
+        submitEntry({key, entry});          // passed entry/data and key to storage entry at that key in DB/AsyncStorage
 
         // clear local notification
     }
