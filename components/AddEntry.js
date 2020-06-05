@@ -103,7 +103,7 @@ class AddEntry extends Component {
 
     render() {
         const metaInfo = getMetricMetaInfo();
-        if (this.props.alreadyLogged) {
+        if (this.props.alreadyLogged) {     // if user has already logged/added data for a day then show view in the if block otherwise show normal view
             return (
                 <View>
                     <Ionicons name='md-happy'
