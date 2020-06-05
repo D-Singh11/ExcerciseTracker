@@ -20,5 +20,9 @@ export function removeEntry(key) {
         const data = JSON.parse(results);               // conver data from strings to JSON
         data[key] = undefined;              // set key(passed as argument) data to undefined/clear data stored at that key
         delete data[key]                    // delete the key from the storage
+
+        // save the new state to the local storage because we removed an item's key and data from the local storage
+        // Therefore we set the data linked to calender app again using setItem function of AsyncStorage
+        AsyncStorage.setItem(CALENDAR_STORAGE_KEY, JSON.stringify(data));
     });
 }
