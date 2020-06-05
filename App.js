@@ -1,19 +1,20 @@
 import React from 'react';
-import {View } from 'react-native';
+import { View } from 'react-native';
 import AddEntry from './components/AddEntry';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import reducers from './reducers';
 
+const store = createStore(reducers);
 
 export default class App extends React.Component {
-  componentDidMount(){
-    console.log('brfore');
-    debugger
-    console.log('afer');
-  }
   render() {
     return (
-      <View>
-        <AddEntry />
-      </View>
+      <Provider store={store}>
+        <View>
+          <AddEntry />
+        </View>
+      </Provider>
     );
   }
 }
