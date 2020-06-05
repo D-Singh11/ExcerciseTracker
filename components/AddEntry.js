@@ -5,6 +5,8 @@ import FitSlider from './FitSlider';
 import FitStepper from './FitStepper';
 import DateHeader from './DateHeader';
 import SubmitBtn from './SubmitBtn';
+import TextButton from './TextButton';
+import { Ionicons } from '@expo/vector-icons'
 
 export default class AddEntry extends Component {
     state = {
@@ -51,7 +53,7 @@ export default class AddEntry extends Component {
         })
     }
 
-    submit =() =>{
+    submit = () => {
         const key = timeToString();
         const entry = this.state;
 
@@ -73,8 +75,30 @@ export default class AddEntry extends Component {
         // clear local notification
     }
 
+    reset =()=>{
+        const key = timeToString();
+
+        // update redux
+
+        // route to home
+
+        // update 'DB'
+    }
+
     render() {
         const metaInfo = getMetricMetaInfo();
+        if (this.props.alreadyLogged) {
+            return (
+                <View>
+                    <Ionicons name='md-happy'
+                        size={100} />
+                        <Text>You  have alreday logged your information for today.</Text>
+                        <TextButton onPress={this.reset}>
+                            Reset
+                        </TextButton>
+                </View>
+            )
+        }
         return (
             <View>
                 <DateHeader date={(new Date()).toLocaleDateString()} />
