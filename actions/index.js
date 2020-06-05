@@ -9,6 +9,7 @@ export function receiveEntries(entries) {
 }
 
 
+// used to add new entry/data for a specific day to the store
 export function addEntry(entry) {
     return {
         type: ADD_ENTRY,
