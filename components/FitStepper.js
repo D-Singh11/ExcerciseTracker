@@ -9,12 +9,12 @@ function FitSlider(props) {
         <View style={[styles.row, { justifyContent: 'space-between' }]}>
             <View style={{ flexDirection: 'row' }}>
                 <TouchableOpacity
-                    style={styles.iosBtn}
+                    style={[styles.iosBtn, { borderTopRightRadius: 0, borderBottomRightRadius: 0 }]}
                     onPress={props.onDecrement}>
                     <FontAwesome name='minus' size={30} color={purple} />
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={styles.iosBtn}
+                    style={[styles.iosBtn, , { borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }]}
                     onPress={props.onIncrement}>
                     <FontAwesome name='plus' size={30} color={purple} />
                 </TouchableOpacity>
