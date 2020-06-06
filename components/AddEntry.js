@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
-import { getMetricMetaInfo, timeToString, getDailyReminderValue } from '../utils/helpers';
+import {
+    Text, View,
+    Platform,
+    StyleSheet
+} from 'react-native';
+import {
+    getMetricMetaInfo,
+    timeToString,
+    getDailyReminderValue
+} from '../utils/helpers';
 import FitSlider from './FitSlider';
 import FitStepper from './FitStepper';
 import DateHeader from './DateHeader';
@@ -10,6 +18,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { submitEntry, removeEntry } from '../utils/api';
 import { connect } from 'react-redux';
 import { addEntry } from '../actions';
+import { white, purple } from '../utils/colors';
 
 class AddEntry extends Component {
     state = {
@@ -106,25 +115,25 @@ class AddEntry extends Component {
         const metaInfo = getMetricMetaInfo();
         if (this.props.alreadyLogged) {     // if user has already logged/added data for a day then show view in the if block otherwise show normal view
             return (
-                <View>
+                <View style={styles.center}>
                     <Ionicons name='md-happy'
                         size={100} />
                     <Text>You  have alreday logged your information for today.</Text>
-                    <TextButton onPress={this.reset}>
+                    <TextButton onPress={this.reset} style={{ margin: 10 }}>
                         Reset
                     </TextButton>
                 </View>
             )
         }
         return (
-            <View>
+            <View style={styles.container}>
                 <DateHeader date={(new Date()).toLocaleDateString()} />
                 {Object.keys(metaInfo).map(key => {
                     const { getIcon, type, ...rest } = metaInfo[key]
                     const value = this.state[key]
 
                     return (
-                        <View key={key}>
+                        <View key={key} style={styles.row}>
                             {getIcon()}
                             {type === 'slider'
                                 ? <FitSlider value={value}
@@ -145,15 +154,37 @@ class AddEntry extends Component {
     }
 }
 
-function matStateToProps(state){
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 20,
+        backgroundColor: white,
+    },
+    row: {
+        flexDirection: 'row',
+        flex: 1,
+        alignItems: 'center'
+    },
+    center: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: 30,
+        marginRight: 30
+    }
+})
+
+
+
+function matStateToProps(state) {
     const key = timeToString();                 // gets the current day's date in s string format.
 
-    return{
+    return {
         // typeof state[key].today === 'undefined' is used because state will only have today property if there is no data added/logged for the day.
         // because today property is used to store a message which tells user to add data/emtry for the day.
         // If the value for 'key'/specific day has no today property then that means data for that day has aleardy been logged/added for that day.
         // if data already added then there will be no 'today property in the state for that dey(key) and it will be undefined.
-        alreadyLogged : state[key] && typeof state[key].today === 'undefined'
+        alreadyLogged: state[key] && typeof state[key].today === 'undefined'
     }
 }
 
