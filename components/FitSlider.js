@@ -6,6 +6,7 @@ function FitSlider(props) {
     return (
         <View style={[styles.row, { justifyContent: 'space-between' }]}>
             <Slider
+            style={{flex:1}}
                 minimumValue={0}
                 maximumValue={props.max}
                 step={props.step}
