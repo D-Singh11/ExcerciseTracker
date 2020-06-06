@@ -116,7 +116,7 @@ class AddEntry extends Component {
         if (this.props.alreadyLogged) {     // if user has already logged/added data for a day then show view in the if block otherwise show normal view
             return (
                 <View style={styles.center}>
-                    <Ionicons name='md-happy'
+                    <Ionicons name={Platform.os === 'ios' ? 'ios-happy-outline' : 'md-happy'}
                         size={100} />
                     <Text>You  have alreday logged your information for today.</Text>
                     <TextButton onPress={this.reset} style={{ margin: 10 }}>
