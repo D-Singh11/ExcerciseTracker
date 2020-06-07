@@ -10,10 +10,10 @@ function MetricCard({ date, metrics }) {
         <View>
             {date && <DateHeader date={date} />}
             {Object.keys(metrics).map(metricKey => {
-                const { getIcon, displayName, unit, backgroundColor } = getMetricMetaInfo(metricKey);
+                const { getIcon, displayName, unit } = getMetricMetaInfo(metricKey);
 
                 return (
-                    <View style={StyleSheet.metric} key={metricKey}>
+                    <View style={styles.metric} key={metricKey}>
                         {getIcon()}
                         <View>
                             <Text style={{ fontSize: 20 }}>
@@ -37,4 +37,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default MetricCard
+export default MetricCard;
