@@ -32,7 +32,7 @@ class History extends Component {
         return (
             <View>
                 {today
-                    ? <Text>{JSON.stringify(toady)}</Text>
+                    ? <Text>{JSON.stringify(today)}</Text>
                     : <Text>{JSON.stringify(metrics)}</Text>
                 }
             </View>

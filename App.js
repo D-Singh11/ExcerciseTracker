@@ -17,6 +17,7 @@ export default class App extends React.Component {
 
           </View>
           <History />
+          {/* <AddEntry /> */}
         </View>
       </Provider>
     );
