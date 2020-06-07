@@ -8,23 +8,29 @@ import UdaciFitnessCalendar from 'udacifitness-calendar';
 import { white } from '../utils/colors';
 import DateHeader from './DateHeader';
 import MetricCard from './MetricCard';
+import { AppLoading } from 'expo';
 
 class History extends Component {
+    state = {
+        hideLoading: false
+    }
     componentDidMount() {
 
         fetchCalenderResults().then(entries => {                // get entries from api
             this.props.dispatch(receiveEntries(entries));           // store them in redux store
         }).then(entries => {
+            // used to hide <AppLoading> Component by setting the hideLoading property of state to true once all above then() are resolved
+            this.setState({
+                hideLoading: true
+            });
+
             if (!entries[timeToString()]) {                         // if no entry/data for today then we
                 const key = timeToString();                          // create a key with today's date and reminder message as value to store in the entries for today's entry
                 this.props.dispatch(addEntry({
-                    [timeToString()]: getDailyReminderValue()                      // dispatch action to store message in store
+                    [key]: getDailyReminderValue()                      // dispatch action to store message in store
                 }))
             }
         })
-        // .then(() => this.setState(() => ({ready: true})))
-
-        console.log(this.props);
     }
 
 
@@ -62,6 +68,13 @@ class History extends Component {
     }
 
     render() {
+        // show loading component until loading is not complete
+        const { hideLoading } = this.state;
+        if (hideLoading === false) {
+            return <AppLoading />
+        }
+
+        //Otherwise show the normal view
         return (
             <UdaciFitnessCalendar
                 items={this.props.entries}
