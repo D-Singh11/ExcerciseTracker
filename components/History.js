@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { receiveEntries, addEntry } from '../actions';
 import { timeToString, getDailyReminderValue } from '../utils/helpers';
 import { fetchCalenderResults } from '../utils/api';
+import UdaciFitnessCalendar from 'udacifitness-calendar';
 
 class History extends Component {
     componentDidMount() {
@@ -22,20 +23,44 @@ class History extends Component {
         console.log(this.props);
     }
 
-    render() {
+
+    // function used to render the metrics data for a day if it exists.
+    // Otherwise if there is a today property on the object that means there is 
+    // no data avilable for a todat.
+    // Therefore message stored in side today property is displayed.
+    renderItem = ({ today, ...metrics }, formattedDate, key) => {
         return (
             <View>
-                <Text>
-                    History
-                </Text>
-                <Text>{JSON.stringify(this.props)}</Text>
+                {today
+                    ? <Text>{JSON.stringify(toady)}</Text>
+                    : <Text>{JSON.stringify(metrics)}</Text>
+                }
+            </View>
+        )
+    }
+
+    renderEmptyDate = (formattedDate) => {
+        return (
+            <Text>No data for this day.</Text>
+        )
+    }
+
+    render() {
+        return (
+            <View style={{flex:1}}>
+
+                <UdaciFitnessCalendar
+                    items={this.props.entries}
+                    renderItem={this.renderItem}
+                    renderEmptyDate={this.renderEmptyDate}
+                />
             </View>
         )
     }
 }
 
 
-function mapStateToProps(entries){
+function mapStateToProps(entries) {
     return {
         entries
     }
