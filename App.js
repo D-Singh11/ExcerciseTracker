@@ -11,6 +11,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { Ionicons, FontAwesome } from 'react-native-vector-icons';
 import FitStatusBar from './components/FitStatusBar';
+import EntryDetail from './components/EntryDetail';
+import { createStackNavigator } from '@react-navigation/stack';
 
 const store = createStore(reducers);
 
@@ -52,6 +54,55 @@ const Tab = Platform.OS === "ios"
   ? createBottomTabNavigator()
   : createMaterialTopTabNavigator()
 
+
+const TabsNavigation = () => {
+  return (
+    //* Spread all the properties of TabNavigatorConfig to pass them as props */ }
+    <Tab.Navigator {...TabNavigatorConfig}>
+
+      {/* one way to specify route configs using spread operator. RouteConfigs is defined as object vsriable */}
+      < Tab.Screen {...RouteConfigs['AddEntry']} />
+
+      {/* Other way to specify all props using inline syntax */}
+      <Tab.Screen name="History" component={History} />
+    </Tab.Navigator>
+
+  )
+}
+
+
+const StackNavigatorRouteConfig = {
+  Home: {
+    name: 'Tabs',
+    component: TabsNavigation,
+    options: { headerShown: false }
+  },
+  EntryDetail: {
+    name: 'EntryDetail',
+    component: EntryDetail,
+    options: {
+      title: 'Entry Detail',
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: purple
+      }
+    }
+
+  }
+}
+
+const Stack = createStackNavigator();
+
+const MainNavigator = () => {
+  return (
+    <Stack.Navigator headerMode={'screen'}>
+      <Stack.Screen {...StackNavigatorRouteConfig['Home']} />
+      <Stack.Screen {...StackNavigatorRouteConfig['EntryDetail']} />
+    </Stack.Navigator>
+  )
+}
+
+
 export default class App extends React.Component {
   render() {
     return (
@@ -59,15 +110,7 @@ export default class App extends React.Component {
         <View style={{ flex: 1 }}>
           <FitStatusBar backgroundColor={purple} barStyle='light-content' />
           <NavigationContainer>
-            {/* Spread all the properties of TabNavigatorConfig to pass them as props */}
-            <Tab.Navigator {...TabNavigatorConfig}>
-
-              {/* one way to specify route configs using spread operator. RouteConfigs is defined as object vsriable */}
-              <Tab.Screen {...RouteConfigs['AddEntry']} />  
-
-                  {/* Other way to specify all props using inline syntax */}
-              <Tab.Screen name="History" component={History} />
-            </Tab.Navigator>
+            <MainNavigator />
           </NavigationContainer>
         </View>
       </Provider>
