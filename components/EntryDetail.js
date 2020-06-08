@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, Platform, StatusBar, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { white } from '../utils/colors';
+import MetricCard from './MetricCard';
 
 class EntryDetail extends Component {
 
@@ -22,14 +23,22 @@ class EntryDetail extends Component {
     render() {
         this.setTitleasDate();
         return (
-            <View>
+            <View style={styles.container}>
                 <Text> Entry Detail</Text>
-                <Text> {JSON.stringify(this.props.route.params.entryId)}</Text>
-                <Text> {JSON.stringify(this.props.metrics)}</Text>
+                <MetricCard date={this.props.entryId} metrics={this.props.metrics} />
             </View>
         )
     }
 }
+
+
+const styles = StyleSheet.create({
+    container: {
+        flex:1,
+        backgroundColor:white,
+        padding: 15
+    }
+})
 
 function mapStateToProps(state, props) {
     const entryId = props.route.params.entryId;
