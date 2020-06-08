@@ -66,7 +66,7 @@ export default class App extends React.Component {
               <Tab.Screen {...RouteConfigs['AddEntry']} />  
 
                   {/* Other way to specify all props using inline syntax */}
-              <Tab.Screen name="Bye" component={AddEntry} />
+              <Tab.Screen name="History" component={AddEntry} />
             </Tab.Navigator>
           </NavigationContainer>
         </View>
