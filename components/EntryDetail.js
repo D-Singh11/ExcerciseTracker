@@ -6,6 +6,7 @@ export default class EntryDetail extends Component {
         return (
             <View>
                 <Text> Entry Detail</Text>
+                <Text> {JSON.stringify(this.props.route.params.entryId)}</Text>
             </View>
         )
     }
