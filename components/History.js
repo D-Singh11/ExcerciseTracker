@@ -60,6 +60,7 @@ class History extends Component {
     renderEmptyDate = (formattedDate) => {
         return (
             <View style={styles.item}>
+                <DateHeader date={formattedDate} />
                 <Text style={styles.noDataText}>
                     You didn't log any data/add on this day.
                     </Text>
