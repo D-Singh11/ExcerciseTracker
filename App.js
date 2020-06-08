@@ -81,7 +81,7 @@ const StackNavigatorRouteConfig = {
     name: 'EntryDetail',
     component: EntryDetail,
     options: {
-      title: 'Entry Detail',
+      // title: 'Entry Detail',
       headerTintColor: white,
       headerStyle: {
         backgroundColor: purple
