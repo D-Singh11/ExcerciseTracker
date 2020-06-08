@@ -25,9 +25,19 @@ class EntryDetail extends Component {
             <View>
                 <Text> Entry Detail</Text>
                 <Text> {JSON.stringify(this.props.route.params.entryId)}</Text>
+                <Text> {JSON.stringify(this.props.metrics)}</Text>
             </View>
         )
     }
 }
 
-export default connect()(EntryDetail);
+function mapStateToProps(state, props) {
+    const entryId = props.route.params.entryId;
+
+    return {
+        entryId,
+        metrics: state[entryId]
+    }
+}
+
+export default connect(mapStateToProps)(EntryDetail);
