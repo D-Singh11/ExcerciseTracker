@@ -1,15 +1,16 @@
 import React from 'react';
-import { View, Text, Platform } from 'react-native';
+import { View, Text, Platform, StatusBar } from 'react-native';
 import AddEntry from './components/AddEntry';
 import History from './components/History';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import reducers from './reducers';
-import { purple, white, red } from './utils/colors';
+import { purple, white } from './utils/colors';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { Ionicons, FontAwesome } from 'react-native-vector-icons';
+import FitStatusBar from './components/FitStatusBar';
 
 const store = createStore(reducers);
 
@@ -56,8 +57,7 @@ export default class App extends React.Component {
     return (
       <Provider store={store}>
         <View style={{ flex: 1 }}>
-          <View style={{ height: 20 }}>
-          </View>
+          <FitStatusBar backgroundColor={purple} barStyle='light-content' />
           <NavigationContainer>
             {/* Spread all the properties of TabNavigatorConfig to pass them as props */}
             <Tab.Navigator {...TabNavigatorConfig}>
