@@ -60,11 +60,12 @@ const TabsNavigation = () => {
     //* Spread all the properties of TabNavigatorConfig to pass them as props */ }
     <Tab.Navigator {...TabNavigatorConfig}>
 
+      {/* Other way to specify all props using inline syntax */}
+      <Tab.Screen name="History" component={History} />
+
       {/* one way to specify route configs using spread operator. RouteConfigs is defined as object vsriable */}
       < Tab.Screen {...RouteConfigs['AddEntry']} />
 
-      {/* Other way to specify all props using inline syntax */}
-      <Tab.Screen name="History" component={History} />
     </Tab.Navigator>
 
   )
@@ -73,7 +74,7 @@ const TabsNavigation = () => {
 
 const StackNavigatorRouteConfig = {
   Home: {
-    name: 'Tabs',
+    name: 'Home',
     component: TabsNavigation,
     options: { headerShown: false }
   },
