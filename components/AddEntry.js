@@ -19,6 +19,7 @@ import { submitEntry, removeEntry } from '../utils/api';
 import { connect } from 'react-redux';
 import { addEntry } from '../actions';
 import { white, purple } from '../utils/colors';
+import { CommonActions } from '@react-navigation/native';
 
 class AddEntry extends Component {
     state = {
@@ -85,7 +86,7 @@ class AddEntry extends Component {
         })
 
         // navigate to home
-
+        this.redirectToHome();
         // save to DB/ backend api
         submitEntry({ key, entry });          // passed entry/data and key to storage entry at that key in DB/AsyncStorage
 
@@ -105,10 +106,24 @@ class AddEntry extends Component {
             [key]: getDailyReminderValue()
         }))
 
-        // route to home
+        // route to home / previous screen
+        this.redirectToHome();
 
         // update 'DB'/ backend api
         removeEntry(key);
+    }
+
+
+    // Function used to redirect user to home screen from once new entry is added using Add Entry form
+    redirectToHome = () => {
+        // one way to send user to home/previous screen
+        // this.props.navigation.goBack();
+
+        // Other way to send user to home/previous screen using CommonActions
+        // it also uses goBack(), takes key value as the route/screen of current route/screen(from where you want to move away)
+        this.props.navigation.dispatch(CommonActions.goBack({
+            key: 'AddEntry'
+        }));
     }
 
     render() {
