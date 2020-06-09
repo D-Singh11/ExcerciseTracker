@@ -4,7 +4,6 @@ import { FontAwesome, MaterialIcons, MaterialCommunityIcons } from '@expo/vector
 import { white, red, orange, blue, lightPurp, pink, purple } from './colors';
 import * as Permissions from 'expo-permissions';
 import { Notifications } from 'expo';
-import { totalmem } from 'os';
 
 
 const NOTIFICATION_KEY = 'fitTract:notification';
@@ -200,7 +199,7 @@ export function createLocalNotification() {
 export function setLocalNotification() {
     AsyncStorage.getItem(NOTIFICATION_KEY)              // get data linked to notification key from the asyncStorage
         .then(JSON.parse)                               // parse that data and pass it to next then()
-        .then(({ data }) => {                           // {data} is used to get the data property from the response of previous then - destructuring
+        .then((data) => {
             if (data === null) {                            // if data was null then 
                 Permissions.askAsync(Permissions.NOTIFICATIONS)                 // ask for permissions to det notifications on user's device
                     .then(({ status }) => {                                     // detructure the status property of permisiions

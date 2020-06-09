@@ -7,7 +7,9 @@ import {
 import {
     getMetricMetaInfo,
     timeToString,
-    getDailyReminderValue
+    getDailyReminderValue,
+    clearLocalNotification,
+    setLocalNotification
 } from '../utils/helpers';
 import FitSlider from './FitSlider';
 import FitStepper from './FitStepper';
@@ -91,6 +93,9 @@ class AddEntry extends Component {
         submitEntry({ key, entry });          // passed entry/data and key to storage entry at that key in DB/AsyncStorage
 
         // clear local notification
+        clearLocalNotification();               // clear the notification for today because user has just submitted data/entry for today. Therefore, no need to display today's notification
+
+        setLocalNotification()                  // sets the new notification for tommorow
     }
 
 
