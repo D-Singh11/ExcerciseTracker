@@ -13,6 +13,7 @@ import { Ionicons, FontAwesome } from 'react-native-vector-icons';
 import FitStatusBar from './components/FitStatusBar';
 import EntryDetail from './components/EntryDetail';
 import { createStackNavigator } from '@react-navigation/stack';
+import Live from './components/Live';
 
 const store = createStore(reducers);
 
@@ -65,6 +66,8 @@ const TabsNavigation = () => {
 
       {/* one way to specify route configs using spread operator. RouteConfigs is defined as object vsriable */}
       < Tab.Screen {...RouteConfigs['AddEntry']} />
+      
+      < Tab.Screen name="Live" component={Live} />
 
     </Tab.Navigator>
 
