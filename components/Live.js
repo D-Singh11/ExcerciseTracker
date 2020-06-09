@@ -13,6 +13,13 @@ class Live extends Component {
         direction: ''
     }
 
+
+    // Added componentDidMount() lifecycle hook which is used to ask location permissions.
+    // If permissions granted then set them in local state as granted and call the setLocation() to
+    // start watching user's location. Otherwise set it to whatever the permission status is.
+
+    // If an error occurs during geeting the permission then display error and set the status of l
+    // ocation services permission to 'undetermined'"
     componentDidMount() {
         Permissions.getAsync(Permissions.LOCATION)
             .then(status => {
@@ -36,13 +43,15 @@ class Live extends Component {
 
     }
 
+    // function which is used to set the watch the user location
+    // It also sets/updates the local state with provided  response from Location API.
     setLocation = () => {
         Location.watchHeadingAsync({
             enableHighAccuracy: true,
             timeInterval: 1,
             distanceInterval: 1
         }, ({ coords }) => {
-            const newDirection = calculateDirection(coords.heading);
+            const newDirection = calculateDirection(coords.heading);            // calculates the direction using function
 
             this.setState({
                 coords,
