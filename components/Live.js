@@ -8,9 +8,7 @@ import { calculateDirection } from '../utils/helpers';
 
 class Live extends Component {
     state = {
-        // coords only hard coded to test because emulator doesnot work properly for Location
-        // remove once testing on device
-        coords: { altitude: 200, speed: 10 },                   // store coordinates
+        coords: null,                   // store coordinates
         status: null,                   // used to get user permissions
         direction: '',
         bounceValue: new Animated.Value(1)                  // create new animated value using 'Animated' library of react-native and assign it to property
@@ -25,12 +23,12 @@ class Live extends Component {
     // ocation services permission to 'undetermined'"
     componentDidMount() {
         Permissions.getAsync(Permissions.LOCATION)              // getAsync only gets the permissions response from user, it will only get them if we ask for permissions which is done using 'askAsync' see askPermisions()
-            .then(status => {
-                if (status === 'granted') {
+            .then(permissions => {
+                if (permissions.status === 'granted') {
                     return this.setLocation();
                 }
                 this.setState({
-                    status
+                    status: permissions.status
                 });
             })
             .catch(error => {
@@ -42,14 +40,14 @@ class Live extends Component {
     }
 
 
-    askPermission = () => {
+    askPermission = () => {   
         Permissions.askAsync(Permissions.LOCATION)                      // asks user to provide permissions to acces their location
-            .then(status => {
-                if (status === 'granted') {
+            .then(permissions => {
+                if (permissions.status === 'granted') {
                     return this.setLocation();
                 }
 
-                this.setState({ status });
+                this.setState({ status:  permissions.status});
             })
             .catch(error => {
                 console.warn('Error asking location permisiions', error);
@@ -59,21 +57,21 @@ class Live extends Component {
     // function which is used to set the watch the user location
     // It also sets/updates the local state with provided  response from Location API.
     setLocation = () => {
-        Location.watchHeadingAsync({
+        Location.watchPositionAsync({
             enableHighAccuracy: true,
             timeInterval: 1,
             distanceInterval: 1
         }, ({ coords }) => {
             const newDirection = calculateDirection(coords.heading);           // calculates the new direction recieved from device using function. it is not yet applied to local state's direction property
-
+            
             const { direction } = this.state;                                   // direction already stored in local state
             if (direction !== newDirection) {               // if old and new directions are not same
                 Animated.sequence([                         // Animated.sequence([]) is used to apply multiple animation instead of applying them seprately
                     Animated.timing(this.state.bounceValue, { duration: 200, toValue: 1.04 }),              // applied 'Animated' libarary's 'timing' type animation to bounceValue property
-                    Animated.spring(this.state.bounceValue, { friction: 4, toValue: 4 }),                   // applied 'Animated' libarary's 'spring' type animation  to bounceValue property
+                    Animated.spring(this.state.bounceValue, { friction: 4, toValue: 1 }),                   // applied 'Animated' libarary's 'spring' type animation  to bounceValue property
                 ]).start()                                                                                  // start() is used to start the animation, without it animated behaviour does not get applied
             }
-
+            
             this.setState({
                 coords,
                 status: 'granted',
