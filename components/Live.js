@@ -107,18 +107,24 @@ class Live extends Component {
             <View style={styles.container}>
                 <View style={styles.directionContainer}>
                     <Text style={styles.header}>You are heading</Text>
-                    <Text style={styles.direction}>North</Text>
+                    <Text style={styles.direction}>{this.state.direction}</Text>
                 </View>
 
                 <View style={styles.metricContainer}>
                     <View style={styles.metric}>
                         <Text style={[styles.header, { color: white }]}>Altitude</Text>
-                        <Text style={[styles.subHeader, { color: white }]}>200 feet</Text>
+                        <Text style={[styles.subHeader, { color: white }]}>
+                            {/* {Math.round(this.state.coords.altitude * 3.3808)}  */}
+                            feet
+                        </Text>
                     </View>
 
                     <View style={styles.metric}>
                         <Text style={[styles.header, { color: white }]}>Speed</Text>
-                        <Text style={[styles.subHeader, { color: white }]}>200 mph</Text>
+                        <Text style={[styles.subHeader, { color: white }]}>
+                            {/* {(this.state.coords.speed * 2.2369.toFixed(1))}  */}
+                            mph
+                        </Text>
                     </View>
                 </View>
             </View>
