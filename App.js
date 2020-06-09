@@ -13,7 +13,6 @@ import { Ionicons, FontAwesome } from 'react-native-vector-icons';
 import FitStatusBar from './components/FitStatusBar';
 import EntryDetail from './components/EntryDetail';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 
 const store = createStore(reducers);
 
@@ -51,24 +50,23 @@ const TabNavigatorConfig = {
   }
 };
 
-// const Tab = Platform.OS === "ios"
-//   ? createBottomTabNavigator()
-//   : createMaterialTopTabNavigator()
+const Tab = Platform.OS === "ios"
+  ? createBottomTabNavigator()
+  : createMaterialTopTabNavigator()
 
-  const Drawer = createDrawerNavigator();
 
 const TabsNavigation = () => {
   return (
     //* Spread all the properties of TabNavigatorConfig to pass them as props */ }
-    <Drawer.Navigator {...TabNavigatorConfig}>
+    <Tab.Navigator {...TabNavigatorConfig}>
 
       {/* Other way to specify all props using inline syntax */}
-      <Drawer.Screen name="History" component={History} />
+      <Tab.Screen name="History" component={History} />
 
       {/* one way to specify route configs using spread operator. RouteConfigs is defined as object vsriable */}
-      < Drawer.Screen {...RouteConfigs['AddEntry']} />
+      < Tab.Screen {...RouteConfigs['AddEntry']} />
 
-    </Drawer.Navigator>
+    </Tab.Navigator>
 
   )
 }
