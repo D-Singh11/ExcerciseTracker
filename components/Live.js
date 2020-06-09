@@ -6,7 +6,7 @@ import { white, purple } from '../utils/colors';
 class Live extends Component {
     state = {
         coords: null,                   // store coordinates
-        status: 'undetermined',                   // used to get user permissions
+        status: 'denied',                   // used to get user permissions
         direction: ''
     }
 
@@ -22,8 +22,12 @@ class Live extends Component {
 
         if (this.state.status === 'denied') {
             return (
-                <View>
-                    <Text>Access Denied</Text>
+                <View style={styles.center}>
+                    <Foundation name='alert' size={50} />
+                    <Text>
+                        You denied access to your location. You can enable it by visiting
+                        your settings and enabling the location services for this app.
+                    </Text>
                 </View>
             )
         }
