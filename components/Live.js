@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, ActivityIndicator, StyleSheet, TouchableOpacity, Animated } from 'react-native';
 import { Foundation } from '@expo/vector-icons';
 import { white, purple } from '../utils/colors';
 import * as Location from 'expo-location';
@@ -10,9 +10,10 @@ class Live extends Component {
     state = {
         // coords only hard coded to test because emulator doesnot work properly for Location
         // remove once testing on device
-        coords: {altitude: 200, speed: 10},                   // store coordinates
+        coords: { altitude: 200, speed: 10 },                   // store coordinates
         status: null,                   // used to get user permissions
-        direction: ''
+        direction: '',
+        bounceValue: new Animated.Value(1)                  // create new animated value using 'Animated' library of react-native and assign it to property
     }
 
 
@@ -63,7 +64,15 @@ class Live extends Component {
             timeInterval: 1,
             distanceInterval: 1
         }, ({ coords }) => {
-            const newDirection = calculateDirection(coords.heading);            // calculates the direction using function
+            const newDirection = calculateDirection(coords.heading);           // calculates the new direction recieved from device using function. it is not yet applied to local state's direction property
+
+            const { direction } = this.state;                                   // direction already stored in local state
+            if (direction !== newDirection) {               // if old and new directions are not same
+                Animated.sequence([                         // Animated.sequence([]) is used to apply multiple animation instead of applying them seprately
+                    Animated.timing(this.state.bounceValue, { duration: 200, toValue: 1.04 }),              // applied 'Animated' libarary's 'timing' type animation to bounceValue property
+                    Animated.spring(this.state.bounceValue, { friction: 4, toValue: 4 }),                   // applied 'Animated' libarary's 'spring' type animation  to bounceValue property
+                ]).start()                                                                                  // start() is used to start the animation, without it animated behaviour does not get applied
+            }
 
             this.setState({
                 coords,
@@ -109,14 +118,17 @@ class Live extends Component {
             <View style={styles.container}>
                 <View style={styles.directionContainer}>
                     <Text style={styles.header}>You are heading</Text>
-                    <Text style={styles.direction}>{this.state.direction}</Text>
+                    <Animated.Text
+                        style={[styles.direction, { transform: [{ scale: this.state.bounceValue }] }]}>
+                        {this.state.direction}
+                    </Animated.Text>
                 </View>
 
                 <View style={styles.metricContainer}>
                     <View style={styles.metric}>
                         <Text style={[styles.header, { color: white }]}>Altitude</Text>
                         <Text style={[styles.subHeader, { color: white }]}>
-                            {Math.round(this.state.coords.altitude * 3.3808)} 
+                            {Math.round(this.state.coords.altitude * 3.3808)}
                             feet
                         </Text>
                     </View>
@@ -124,7 +136,7 @@ class Live extends Component {
                     <View style={styles.metric}>
                         <Text style={[styles.header, { color: white }]}>Speed</Text>
                         <Text style={[styles.subHeader, { color: white }]}>
-                            {(this.state.coords.speed * 2.2369.toFixed(1))} 
+                            {(this.state.coords.speed * 2.2369.toFixed(1))}
                             mph
                         </Text>
                     </View>
