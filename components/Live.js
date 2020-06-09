@@ -8,7 +8,9 @@ import { calculateDirection } from '../utils/helpers';
 
 class Live extends Component {
     state = {
-        coords: null,                   // store coordinates
+        // coords only hard coded to test because emulator doesnot work properly for Location
+        // remove once testing on device
+        coords: {altitude: 200, speed: 10},                   // store coordinates
         status: null,                   // used to get user permissions
         direction: ''
     }
@@ -114,7 +116,7 @@ class Live extends Component {
                     <View style={styles.metric}>
                         <Text style={[styles.header, { color: white }]}>Altitude</Text>
                         <Text style={[styles.subHeader, { color: white }]}>
-                            {/* {Math.round(this.state.coords.altitude * 3.3808)}  */}
+                            {Math.round(this.state.coords.altitude * 3.3808)} 
                             feet
                         </Text>
                     </View>
@@ -122,7 +124,7 @@ class Live extends Component {
                     <View style={styles.metric}>
                         <Text style={[styles.header, { color: white }]}>Speed</Text>
                         <Text style={[styles.subHeader, { color: white }]}>
-                            {/* {(this.state.coords.speed * 2.2369.toFixed(1))}  */}
+                            {(this.state.coords.speed * 2.2369.toFixed(1))} 
                             mph
                         </Text>
                     </View>
