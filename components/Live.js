@@ -10,6 +10,11 @@ class Live extends Component {
         direction: ''
     }
 
+
+    askPermission = () => {
+
+    }
+
     render() {
         if (this.state.status === null) {
             return <ActivityIndicator style={{ marginTop: 30 }} />
