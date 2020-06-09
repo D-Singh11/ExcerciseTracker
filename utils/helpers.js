@@ -1,12 +1,13 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, AsyncStorage } from 'react-native';
 import { FontAwesome, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
-
 import { white, red, orange, blue, lightPurp, pink, purple } from './colors';
+import * as Permissions from 'expo-permissions';
+import { Notifications } from 'expo';
+import { totalmem } from 'os';
 
 
-
-
+const NOTIFICATION_KEY = 'fitTract:notification';
 
 export function isBetween(num, x, y) {
     if (num >= x && num <= y) {
@@ -160,4 +161,68 @@ export function getDailyReminderValue() {
     return {
         today: '👋 Dont forget to add your data for today.'
     }
+}
+
+
+// Notifications Logic for - Local notifications
+
+
+
+// function used to clear Local notifications
+export function clearLocalNotification() {
+    AsyncStorage.removeItem(NOTIFICATION_KEY)                       // remove the data linked to Nnotification key from the device's local/async storage
+    .then(response => {                                             // once that is done then
+        Notifications.cancelAllScheduledNotificationsAsync();       // cancel all the notifications from the application
+    })
+}
+
+
+// function used to create new notification
+// @returns : object
+export function createLocalNotification() {
+    return {
+        title: 'Log your stats',
+        body: '👋 dont forget to add your stats/entry for today',
+        ios: {
+            sound: true
+        },
+        android: {
+            sound: true,
+            priority: 'high',
+            sticky: false,
+            vibrate: true
+        }
+    }
+}
+
+
+// function used to set local notification
+export function setLocalNotification() {
+    AsyncStorage.getItem(NOTIFICATION_KEY)              // get data linked to notification key from the asyncStorage
+        .then(JSON.parse)                               // parse that data and pass it to next then()
+        .then(({ data }) => {                           // {data} is used to get the data property from the response of previous then - destructuring
+            if (data === null) {                            // if data was null then 
+                Permissions.askAsync(Permissions.NOTIFICATIONS)                 // ask for permissions to det notifications on user's device
+                    .then(({ status }) => {                                     // detructure the status property of permisiions
+                        if (status === 'granted') {
+                            Notifications.cancelAllScheduledNotificationsAsync();                       // cancel all the previously scheduled notifications- just to ensure we dont set same notification twice
+
+                            let tomorrow = new Date();                              // new date variable used to define when should new notification appear on user's device
+                            tomorrow.setDate(tomorrow.getDate() + 1);               // set the date for notification to show on device
+                            tomorrow.setHours(20);                                  // set the hour for notification to show on device
+                            tomorrow.setMinutes(0);                                 // set the minute for notification to show on device
+
+                            Notifications.scheduleLocalNotificationAsync(           // expo's Notification package used to scedule new notofication take2 arguments 1. actual notification (object) 2. when to show the (object)
+                                createLocalNotofication(),                          // local function which return a notification object
+                                {
+                                    time: tomorrow,                                 // specify the time of notification to show on device
+                                    repeat: 'day'                                   // set the repeat of notification to 'day' means this notification should repeat everyday at same time
+                                }
+                            )
+
+                            AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true));               // store the true 'property' in local/asyncStorage of device
+                        }
+                    })
+            }
+        })
 }
