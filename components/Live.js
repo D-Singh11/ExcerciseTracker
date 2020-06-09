@@ -2,17 +2,54 @@ import React, { Component } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, TouchableOpacity } from 'react-native';
 import { Foundation } from '@expo/vector-icons';
 import { white, purple } from '../utils/colors';
+import * as Location from 'expo-location';
+import * as Permissions from 'expo-permissions';
+import { calculateDirection } from '../utils/helpers';
 
 class Live extends Component {
     state = {
         coords: null,                   // store coordinates
-        status: 'granted',                   // used to get user permissions
+        status: null,                   // used to get user permissions
         direction: ''
+    }
+
+    componentDidMount() {
+        Permissions.getAsync(Permissions.LOCATION)
+            .then(status => {
+                if (status === 'granted') {
+                    return this.setLocation();
+                }
+                this.setState({
+                    status
+                });
+            })
+            .catch(error => {
+                console.warn('Error getting location permisiions');
+                this.setState({
+                    status: 'undetermined'
+                });
+            })
     }
 
 
     askPermission = () => {
 
+    }
+
+    setLocation = () => {
+        Location.watchHeadingAsync({
+            enableHighAccuracy: true,
+            timeInterval: 1,
+            distanceInterval: 1
+        }, ({ coords }) => {
+            const newDirection = calculateDirection(coords.heading);
+
+            this.setState({
+                coords,
+                status: 'granted',
+                direction: newDirection
+            })
+        })
     }
 
     render() {
