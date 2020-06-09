@@ -21,7 +21,7 @@ class Live extends Component {
     // If an error occurs during geeting the permission then display error and set the status of l
     // ocation services permission to 'undetermined'"
     componentDidMount() {
-        Permissions.getAsync(Permissions.LOCATION)
+        Permissions.getAsync(Permissions.LOCATION)              // getAsync only gets the permissions response from user, it will only get them if we ask for permissions which is done using 'askAsync' see askPermisions()
             .then(status => {
                 if (status === 'granted') {
                     return this.setLocation();
@@ -31,7 +31,7 @@ class Live extends Component {
                 });
             })
             .catch(error => {
-                console.warn('Error getting location permisiions');
+                console.warn('Error getting location permisiions', error);
                 this.setState({
                     status: 'undetermined'
                 });
@@ -40,7 +40,17 @@ class Live extends Component {
 
 
     askPermission = () => {
+        Permissions.askAsync(Permissions.LOCATION)                      // asks user to provide permissions to acces their location
+            .then(status => {
+                if (status === 'granted') {
+                    return this.setLocation();
+                }
 
+                this.setState({ status });
+            })
+            .catch(error => {
+                console.warn('Error asking location permisiions', error);
+            })
     }
 
     // function which is used to set the watch the user location
