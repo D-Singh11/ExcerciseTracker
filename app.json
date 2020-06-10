@@ -2,6 +2,7 @@
   "expo": {
     "name": "fitnessTrack",
     "slug": "fitnessTrack",
+    "description": "Best Fitness tracker you wanted",
     "platforms": [
       "ios",
       "android",
@@ -9,11 +10,14 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "https://maxcdn.icons8.com/Color/PNG/512/Sports/triathlon-512.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
+    },
+    "notification": {
+      "icon": "http://www.student-scholarships.com/images/made/img/featured/nav_basketball_45_45.png"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -22,7 +26,11 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "org.fitnessTrack.exp",
       "supportsTablet": true
+    },
+    "android": {
+      "package": "org.fitnessTrack.exp"
     }
   }
 }
